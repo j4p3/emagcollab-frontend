@@ -6,7 +6,7 @@ var AnimatedHeader = (function() {
     var docElem = document.documentElement,
         header = document.querySelector( '.header' ),
         didScroll = false,
-        changeHeaderOn = 10;
+        changeHeaderOn = 200;
  
     function init() {
         if(!window.addEventListener) {
