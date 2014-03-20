@@ -1,2 +1,277 @@
 @charset "UTF-8";
-body { margin: 0; }
+@import "normalize-scss/_normalize";
+@import "bourbon/dist/_bourbon";
+@import "neat/app/assets/stylesheets/_neat";
+@import "pure-scss/pure";
+@import "font-awesome/scss/font-awesome";
+@import url(//fonts.googleapis.com/css?family=Changa+One:400italic|Droid+Sans:400,700);
+
+
+// Colors & Settings
+$marathon-orange: #ff7701;
+$marathon-blue: #0faad9;
+$grey: #333333;
+$menu-height: 60px;
+$menu-height-shrink: $menu-height * .75;
+
+// Layout Mixins
+@mixin vert-padding {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+@mixin hor-padding {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+@mixin vert-margin {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+@mixin section {
+  @include vert-padding;
+}
+
+// Style Mixins
+@mixin dark-background {
+  background-color: $grey;
+  color: lighten($marathon-blue, 75%);
+}
+
+@mixin big {
+  font-size: 2em;
+}
+
+.big {
+  @include big;
+}
+
+@mixin bold-link {
+  color: $marathon-orange;
+  text-shadow: 2px 2px 0px #000;
+  a { color: $marathon-orange; }
+}
+
+// Component mixins
+
+@mixin button {
+  &:hover {
+    @include background-image(linear-gradient(rgba(lighten($grey, 15%), .25), rgba(darken($grey, 15%), .25)));
+  }
+  &:active {
+    @include background-image(linear-gradient(rgba(darken($grey, 20%), .25), rgba(lighten($grey, 15%), .25)));
+  }
+  &.primary {
+    background-color: $marathon-orange;
+  }
+  &.secondary {
+    background-color: $marathon-blue;
+  }
+}
+
+// Main styles (mobile default)
+html { height: 100%; }
+body {
+  margin: 0;
+  height: 100%;
+  font-family: 'Droid Sans';
+  h1, h2, h3, h4, h5, header { font-family: 'Changa One'; font-style: italic; }
+  ul,ol li { list-style-type: none; padding: 0px; margin: 0px; }
+  a {
+    &:hover { text-decoration: underline; }
+    text-decoration: none;
+  }
+  video { display: block; }
+  video {
+    position: fixed; right: 0; bottom: 0;
+    min-width: 100%; min-height: 100%;
+    width: auto; height: auto; z-index: -100;
+    background: url("../images/marine_corps_marathon_blur.png") no-repeat;
+    background-size: cover;
+  }
+}
+.header.wrapper {
+  width: 100%;
+  header {
+    ul li {
+      @include big;
+      @include bold-link;
+      &.logo a {
+          @include big;
+          text-shadow: 3px 3px 0px #000;
+      }
+    }
+  }
+}
+
+.atf {
+  @include outer-container;
+  @include section;
+  height: 100%;
+  .blocker {
+    height: 60%;
+  }
+  .cta {
+    text-align: center;
+    .copy {
+      font-weight: 700;
+      color: lighten($marathon-blue, 75%);
+      text-shadow: 1px 1px 1px #333;
+    }
+    a {
+      @include button;
+      @include vert-margin;
+      background-color: $marathon-orange;
+    }
+  }
+}
+
+.sponsors.wrapper {
+  @include dark-background;
+  @include section;
+  .sponsors {
+    @include outer-container;
+    span { width: 100%; }
+  }
+}
+
+.content.wrapper {
+  background-color: lighten($marathon-blue, 40%);
+  @include section;
+  .content {
+    @include outer-container;
+    article { @include span-columns(10); @include shift(1); }
+    .cta {
+      text-align: center;
+      a {
+        @include vert-margin;
+        @include button;
+      }
+    }
+  }
+}
+
+.footer.wrapper {
+  @include dark-background;
+  @include section;
+  footer {
+    @include outer-container;
+    ul li {
+        display: block;
+        a { color: #fff; }
+    }
+    .left, .right {
+      @include span-columns(5);
+      &:first-child { @include shift(1); }
+    }
+  }
+}
+
+// Full-width styles
+
+@media screen and (min-width: 768px){
+  .atf {
+    .cta {
+      @include span-columns(9);
+      @include shift(3);
+    }
+  }
+
+  .header.wrapper {
+    height: $menu-height;
+    position: fixed;
+    header {
+      li {
+        display: block;
+        width: auto;
+        &.logo {
+          a { @include big; }
+          margin-top: 45px;
+          width: 250px;
+          position: fixed;
+          -moz-transform: rotate(-15deg);
+          -webkit-transform: rotate(-15deg);
+          -o-transform: rotate(-15deg);
+          -ms-transform: rotate(-15deg);
+          transform: rotate(-15deg);
+        }
+        &:nth-child(2) { @include shift(5); }
+        &:nth-child(3) { @include shift(4); }
+        &:nth-child(4) { @include shift(3); }
+      }
+    }
+  }
+  .header.wrapper.shrink {
+    height: $menu-height-shrink;
+    padding-top: 0px;
+    background-color: $grey;
+    header {
+      li {
+        width: auto;
+        display: inline-block;
+        position: relative;
+        line-height: $menu-height-shrink;
+        &:before { content: " /  " }
+        a { font-size: 1em; }
+        &.logo { a { font-size: 1em; }
+          width: auto;
+          position: relative;
+          margin-top: 0px;
+          -moz-transform: rotate(0deg);
+          -webkit-transform: rotate(0deg);
+          -o-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+        &:nth-child(2) { @include shift(0); }
+        &:nth-child(3) { @include shift(0); }
+        &:nth-child(4) { @include shift(0); }
+      }
+    }
+  }
+
+  .sponsors.wrapper {
+    .sponsors {
+      @include outer-container;
+      span { @include span-columns(3); }
+    }
+  }
+
+  .content.wrapper {
+    .content {
+      article {
+        @include span-columns(12);
+        span {
+          @include span-columns(9);
+        }
+        img {
+          @include span-columns(3);
+        }
+        iframe {
+          width: 100%;
+          height: 400px;
+        }
+        &:nth-child(2n) {
+          float: right;
+        }
+        a {
+          @include button;
+          @include vert-margin;
+        }
+      }
+    }
+  }
+}
+
+/*
+ * Transitions
+ */
+.header {
+  .logo, .logotype, nav {
+    -webkit-transition: all 0.25s;
+    -moz-transition: all 0.25s;
+    transition: all 0.25s;
+  }
+}
